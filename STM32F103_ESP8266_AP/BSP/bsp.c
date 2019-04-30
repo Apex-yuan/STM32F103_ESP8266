@@ -3,8 +3,9 @@
 void bsp_init(void)
 {
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-  systick_init();
   usart1_init(115200);
-  usart3_init(9600);
+  systick_init();
+  //usart1_init(115200);
+  //usart3_init(115200);
   esp8266_init();  
 }

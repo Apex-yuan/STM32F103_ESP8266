@@ -2,8 +2,8 @@
 #include "bsp_usart1.h"
 #include "bsp_usart3.h"
 #include "bsp_systick.h"
-//#include "delay.h"
 #include <string.h>
+
 
 void esp8266_init(void)
 {
@@ -23,18 +23,18 @@ void esp8266_init(void)
   
   GPIO_SetBits(ESP8266_RST_PORT, ESP8266_RST_PIN); //低电平复位，高电平工作
   GPIO_SetBits(ESP8266_CH_PD_PORT, ESP8266_CH_PD_PIN); //CH_PD:高电平工作，低电平供电关掉
-  
+
 }
 
 bool esp8266_sendCmd(char *cmd, char *reply, uint16_t wait)
 {
-  //int i;
+  int i;
   rxFram.length = 0; //清空数据帧，重新接收
   usart3_printf("%s\r\n", cmd);
   if(reply == 0)
     return true;
 
-  delay_us(1000*wait);
+  delay_ms(wait);
   
   rxFram.rxbuffer[rxFram.length] = '\0'; //为接收到的帧数据添加字符串结束标记
   printf("%s",rxFram.rxbuffer);  //将数据发送到串口上位机
@@ -107,10 +107,10 @@ bool esp8266_getApIp (char * pApIp)
 	
   esp8266_sendCmd("AT+CIFSR", "OK",500);
 	
-	pCh = strstr ( rxFram.rxbuffer, "\r\n" );
+	pCh = strstr ( rxFram.rxbuffer, "APIP,\"" );
 	
 	if(pCh != 0)
-		pCh += 2;
+		pCh += 6;
 	else
 		return 0;
 	
@@ -118,7 +118,7 @@ bool esp8266_getApIp (char * pApIp)
 	{
 		pApIp [ uc ] = * ( pCh + uc);
 		
-		if ( pApIp [ uc ] == '\r' )
+		if ( pApIp [ uc ] == '\"' )
 		{
 			pApIp [ uc ] = '\0';
 			break;
@@ -185,5 +185,4 @@ void esp8266_AP_test(void)
   }
   
 }
-
 

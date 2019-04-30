@@ -36,7 +36,7 @@ typedef enum{
 } ESP8266_ApPwdModeEnumDef;
 
 
-#define ESP8266_USART_BOUND  9600//115200
+#define ESP8266_USART_BOUND  115200
 
 /******************************** ESP8266 连接引脚定义 ***********************************/
 #define      ESP8266_CH_PD_CLK                             RCC_APB2Periph_GPIOB  

@@ -8,7 +8,14 @@ void systick_init(void)
   _us_tick = 0;
   _ms_tick = 0;  
   
-	SysTick_Config(SystemCoreClock / 1000000);
+	if(SysTick_Config(SystemCoreClock / 1000000))
+  {
+    /*capture error*/
+    while(1);
+  }
+  
+  /* Configure the SysTick handler priority */
+  NVIC_SetPriority(SysTick_IRQn, 0x0);
 }
 
 void delay_ms(uint32_t millis) 
@@ -41,7 +48,6 @@ void reset(void)
   _ms_tick = 0;
 }
 
-//void systick_irq(void)
 void SysTick_Handler(void)
 {
 	_us_tick++;

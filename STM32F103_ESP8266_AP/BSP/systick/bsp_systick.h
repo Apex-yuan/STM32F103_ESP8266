@@ -15,7 +15,6 @@ void delay_us(uint32_t uillis);
 uint32_t millis(void);
 uint32_t micros(void);
 void reset(void);
-void systick_irq(void);
   
 #ifdef __cplusplus
  }

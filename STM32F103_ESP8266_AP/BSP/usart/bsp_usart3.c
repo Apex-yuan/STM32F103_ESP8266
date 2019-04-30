@@ -67,6 +67,8 @@ void usart3_init(uint32_t bound)
 	
   /* 使能串口接收中断 */ 
   USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+  /* 使能串口总线空闲中断 */
+  USART_ITConfig (USART3, USART_IT_IDLE, ENABLE );
   /* 串口3使能 */
   USART_Cmd(USART3, ENABLE);
 }
@@ -104,38 +106,29 @@ void usart3_printf(char* fmt,...)
 	} 
 }
 
-uint8_t dataStartFlag = 0;
 
 /**
   * @brief  USART3串口中断服务函数
   * @param  none
   * @retval none
   */ 
-void USART3_IRQHandler(void) 
+void usart3_irq(void) 
 {
-	uint8_t rec;
+	uint8_t rec; 
 	
+  /*串口接收中断*/
 	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断
 	{
 		rec = USART_ReceiveData(USART3);//(USART1->DR);	//读取接收到的数据
-    //if(rec == ':')
-    //{
-      //dataStartFlag = 1;
-      //rec = USART_ReceiveData(USART3);
-    //}
-    //if(dataStartFlag == 1)
-    //{
+
     if(rxFram.length < USART3_RX_MAX_LEN - 1) //预留一个字节写结束符
       rxFram.rxbuffer[rxFram.length++] = rec;
-    //}
   } 
-  if(USART_GetITStatus(USART3, USART_IT_IDLE) == SET)    //数据帧接收完毕
+  /*串口空闲中断*/
+  if(USART_GetITStatus(USART3, USART_IT_IDLE) != RESET)    //数据帧接收完毕
 	{
-    rxFram.finishFlag = 1; //接收完成标志位置位
-    //dataStartFlag = 0;
+    rxFram.finishFlag = SET; //接收完成标志位置位
 		
 		rec = USART_ReceiveData(USART3);  //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
   }
 } 
-
-
