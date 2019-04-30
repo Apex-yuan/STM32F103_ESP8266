@@ -186,3 +186,35 @@ void esp8266_AP_test(void)
   
 }
 
+void esp8266_sta_tcpServer_test(void)
+{
+  char pApIp[20];
+  
+  printf("\r\n配置ESP8266\r\n");
+  
+  while(!esp8266_sendCmd ( "AT", "OK", 1000 ));
+  esp8266_modeChoose(STA);
+  while(!esp8266_joinWifi(ESP8266_AP_SSID,ESP8266_AP_PWD));
+  esp8266_multipleIdCmd(ENABLE);
+  esp8266_startServer("8086");
+  esp8266_setTimeout("500");
+  esp8266_getApIp(pApIp);
+  printf("\r\n配置完毕\r\n");
+  while(1)
+  {
+    if(rxFram.finishFlag == SET)
+    {
+      USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
+      rxFram.rxbuffer[rxFram.length] = '\0';  //为帧数据增加结束标记
+      
+      printf("%s",rxFram.rxbuffer);
+      
+      /*处理接收到的数据*/
+      
+      rxFram.length = 0;
+      rxFram.finishFlag = RESET;
+      USART_ITConfig(USART3, USART_IT_RXNE, ENABLE); //开启串口接收中断
+    }
+  }
+}
+

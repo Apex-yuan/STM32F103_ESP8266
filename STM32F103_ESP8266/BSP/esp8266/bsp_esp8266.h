@@ -57,8 +57,12 @@ typedef enum{
 
 #define   ESP8266_TCPSERVER_TIMEOUT    "5000"             //服务器超时时间（单位：秒）
 
+#define   ESP8266_AP_SSID  "stupid-kou"
+#define   ESP8266_AP_PWD   "wmk6053003"
+
 void esp8266_init(void);
 void esp8266_AP_test(void);
+void esp8266_sta_tcpServer_test(void);
 
 
 #endif /* __ESP8266_H */
