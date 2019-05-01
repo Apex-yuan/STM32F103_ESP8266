@@ -1,10 +1,10 @@
 # ESP8266(ESP-01)模块驱动程序
 
-- STM32F103_ESP8266_AP: ESP8266模块工作在AP模式
+- APP/ap_test: ESP8266模块工作在AP server模式
 
-- STM32F103_ESP8266_STA: ESP8266模块工作在STA模式
+- APP/sta_test: ESP8266模块工作在STA server模式
 
-- STM32F103_ESPP8266_AP&STA: ESP8266模块工作在AP+STA模式
+- APP/ap_sta_test: ESP8266模块工作在AP server+STA server模式
 
   ### AP(Access Point)模式：
 

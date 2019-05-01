@@ -112,7 +112,7 @@ void usart3_printf(char* fmt,...)
   * @param  none
   * @retval none
   */ 
-void usart3_irq(void) 
+void USART3_IRQHandler(void) 
 {
 	uint8_t rec; 
 	

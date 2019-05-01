@@ -28,7 +28,6 @@ void esp8266_init(void)
 
 bool esp8266_sendCmd(char *cmd, char *reply, uint16_t wait)
 {
-  int i;
   rxFram.length = 0; //清空数据帧，重新接收
   usart3_printf("%s\r\n", cmd);
   if(reply == 0)
@@ -63,14 +62,14 @@ bool esp8266_modeChoose(ESP8266_ModeEnumDef mode)
   }
 }
 
-bool esp8266_joinWifi(char *pSSID, char *pPassword)
+bool esp8266_joinAP(char *pSSID, char *pPassword)
 {
   char cmd[120];
   sprintf(cmd, "AT+CWJAP=\"%s\",\"%s\"", pSSID, pPassword);
   return esp8266_sendCmd(cmd,"OK", 5000);
 }
 
-bool esp8266_buildWifi(char * pSSID, char * pPwd, ESP8266_ApPwdModeEnumDef pwdMode)
+bool esp8266_buildAP(char * pSSID, char * pPwd, ESP8266_ApPwdModeEnumDef pwdMode)
 {
   char cmd[120];
   sprintf(cmd, "AT+CWSAP=\"%s\",\"%s\",1,%d",pSSID, pPwd, pwdMode);
@@ -99,7 +98,7 @@ bool esp8266_setTimeout(char * timeout)
 }
 
 //bool esp8266_getApIp()
-bool esp8266_getApIp (char * pApIp)
+bool esp8266_getAPIP (char * pApIp)
 {
 	char uc;
 	char * pCh;
@@ -141,80 +140,4 @@ void esp8266_AT_Test ( void )
 	}
 }
 
-void esp8266_AP_test(void)
-{
-  char pApIp[20];
-  
-  printf("开始配置esp8266\n");
-  //esp8266_reset();
-  //esp8266_AT_Test();
-  while(!esp8266_sendCmd ( "AT", "OK", 1000 ));
-  printf("模块响应成功\r\n");
-  esp8266_modeChoose(AP);
-  printf("AP模式配置成功\r\n");
-  while(!esp8266_buildWifi(ESP8266_BUILD_AP_SSID,ESP8266_BUILD_AP_PWD,ESP8266_BUILD_AP_ECN));
-  printf("wifi建立成功\r\n");
-  esp8266_multipleIdCmd(ENABLE);
-  printf("开启多连接模式成功\r\n");
-  esp8266_startServer(ESP8266_TCPSERVER_PORT);
-  printf("配置本地端口\r\n");
-  esp8266_setTimeout(ESP8266_TCPSERVER_TIMEOUT);
-  esp8266_getApIp(pApIp);
-  printf("本机IP:%s\r\n",pApIp);
-  
-  printf("******配置完成******\n");
-  
-  rxFram.length = 0;
-  rxFram.finishFlag = RESET;
-  
-  while(1)
-  {
-    if(rxFram.finishFlag == SET)
-    {
-      USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
-      rxFram.rxbuffer[rxFram.length] = '\0';  //为帧数据增加结束标记
-      
-      printf("%s",rxFram.rxbuffer);
-      
-      /*处理接收到的数据*/
-      
-      rxFram.length = 0;
-      rxFram.finishFlag = RESET;
-      USART_ITConfig(USART3, USART_IT_RXNE, ENABLE); //开启串口接收中断
-    }
-  }
-  
-}
-
-void esp8266_sta_tcpServer_test(void)
-{
-  char pApIp[20];
-  
-  printf("\r\n配置ESP8266\r\n");
-  
-  while(!esp8266_sendCmd ( "AT", "OK", 1000 ));
-  esp8266_modeChoose(STA);
-  while(!esp8266_joinWifi(ESP8266_AP_SSID,ESP8266_AP_PWD));
-  esp8266_multipleIdCmd(ENABLE);
-  esp8266_startServer("8086");
-  esp8266_setTimeout("500");
-  esp8266_getApIp(pApIp);
-  printf("\r\n配置完毕\r\n");
-  while(1)
-  {
-    if(rxFram.finishFlag == SET)
-    {
-      USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
-      rxFram.rxbuffer[rxFram.length] = '\0';  //为帧数据增加结束标记
-      
-      printf("%s",rxFram.rxbuffer);
-      
-      /*处理接收到的数据*/
-      
-      rxFram.length = 0;
-      rxFram.finishFlag = RESET;
-      USART_ITConfig(USART3, USART_IT_RXNE, ENABLE); //开启串口接收中断
-    }
-  }
-}
 

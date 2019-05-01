@@ -338,7 +338,7 @@
               <MiscControls>--diag_suppress=1,1300</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\systick;..\BSP;..\BSP\esp8266;..\BSP\delay</IncludePath>
+              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\systick;..\BSP;..\BSP\esp8266;..\BSP\delay;..\APP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -551,6 +551,26 @@
               <FileName>bsp_systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\systick\bsp_systick.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>APP</GroupName>
+          <Files>
+            <File>
+              <FileName>ap_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\ap_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>sta_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\sta_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>ap_sta_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\ap_sta_test.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1126,6 +1146,26 @@
               <FileName>bsp_systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\systick\bsp_systick.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>APP</GroupName>
+          <Files>
+            <File>
+              <FileName>ap_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\ap_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>sta_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\sta_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>ap_sta_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\ap_sta_test.c</FilePath>
             </File>
           </Files>
         </Group>
